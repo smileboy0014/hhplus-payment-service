@@ -1,0 +1,68 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.3'
+    id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'com.hhplus'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    testImplementation 'org.projectlombok:lombok:1.18.22'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+    // https://wonsjung.tistory.com/584
+    // http://localhost:8080/api/swagger-ui/index.html
+
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    // log
+    implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
+    implementation group: 'com.github.maricn', name: 'logback-slack-appender', version: '1.6.1'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+    testImplementation 'io.rest-assured:rest-assured:5.1.1'
+
+    // redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    // Redisson
+    implementation 'org.redisson:redisson-spring-boot-starter:3.22.1'
+    // cache
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'com.github.ben-manes.caffeine:caffeine'
+
+    // kafka
+    // Spring Kafka
+    implementation 'org.springframework.kafka:spring-kafka:3.2.0'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    // Json 날짜 관련 파싱 문제
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

@@ -1,0 +1,109 @@
+spring:
+  profiles:
+    default: local
+    group:
+      #      local:
+      #        - file-default-logging
+      #        - file-error-logging
+      dev:
+        - file-default-logging
+        - file-error-logging
+        - slack-error-logging
+      prod:
+        - file-error-logging
+        - slack-error-logging
+  application:
+    name: hhplus-payment-service
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://localhost:53306/concert?useUnicode=yes&characterEncoding=UTF-8&rewriteBatchedStatements=true
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+        default_batch_fetch_size: 500
+  data:
+    redis:
+      host: localhost
+      port: 56379
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: hhplus-01
+
+server:
+  servlet:
+    context-path: /api
+  port: 8080
+
+logging:
+  level:
+    org:
+      web: debug
+      hibernate:
+        SQL: debug
+
+jwt:
+  secret-key: hhplusConcertSecretKeyForAuthenticationJwtToken
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://localhost:53306/concert?useUnicode=yes&characterEncoding=UTF-8&rewriteBatchedStatements=true
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: 1234
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        default_batch_fetch_size: 500
+
+logging:
+  level:
+    org:
+      web: debug
+      hibernate:
+        SQL: debug
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://localhost:53306/concert?useUnicode=yes&characterEncoding=UTF-8&rewriteBatchedStatements=true
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: 1234
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        default_batch_fetch_size: 500
+
+logging:
+  level:
+    org:
+      web: INFO
+      hibernate:
+        SQL: INFO
