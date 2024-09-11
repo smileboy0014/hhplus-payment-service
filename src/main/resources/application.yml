@@ -16,7 +16,7 @@ spring:
     name: hhplus-payment-service
   datasource:
     hikari:
-      jdbc-url: jdbc:mysql://localhost:53306/concert?useUnicode=yes&characterEncoding=UTF-8&rewriteBatchedStatements=true
+      jdbc-url: jdbc:mysql://localhost:23306/payment?useUnicode=yes&characterEncoding=UTF-8&rewriteBatchedStatements=true
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: root
       password: 1234
@@ -32,7 +32,7 @@ spring:
   data:
     redis:
       host: localhost
-      port: 56379
+      port: 26379
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
@@ -41,7 +41,7 @@ spring:
 server:
   servlet:
     context-path: /api
-  port: 8080
+  port: 8082
 
 logging:
   level:
