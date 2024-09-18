@@ -24,16 +24,14 @@ public class OutboxService {
     @Transactional
     public Outbox save(OutboxCommand.Create command) {
 
-        return outboxRepository.saveOutbox(command.toDomain()).orElseThrow(() -> {
-            throw new CustomException(OUTBOX_IS_FAILED, OUTBOX_IS_FAILED.getMsg());
-        });
+        return outboxRepository.saveOutbox(command.toDomain()).orElseThrow(() ->
+                new CustomException(OUTBOX_IS_FAILED, OUTBOX_IS_FAILED.getMsg()));
     }
 
     @Transactional
     public Outbox publish(String messageId) {
-        Outbox outbox = outboxRepository.getOutbox(messageId).orElseThrow(() -> {
-            throw new CustomException(OUTBOX_IS_NOT_FOUND, OUTBOX_IS_NOT_FOUND.getMsg());
-        });
+        Outbox outbox = outboxRepository.getOutbox(messageId).orElseThrow(() ->
+                new CustomException(OUTBOX_IS_NOT_FOUND, OUTBOX_IS_NOT_FOUND.getMsg()));
         // outbox 메시지 발행 완료
         outbox.publish();
         outboxRepository.saveOutbox(outbox);

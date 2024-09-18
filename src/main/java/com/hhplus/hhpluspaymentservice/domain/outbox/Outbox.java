@@ -19,8 +19,6 @@ public class Outbox {
 
     private Long outboxId;
 
-    private DomainType type;
-
     private String messageId;
 
     private EventStatus status;
@@ -62,12 +60,6 @@ public class Outbox {
         status = EventStatus.INIT;
     }
 
-    public enum DomainType {
-        CONCERT,
-        PAYMENT,
-        USER,
-        QUEUE
-    }
 
     public enum EventStatus {
         INIT,

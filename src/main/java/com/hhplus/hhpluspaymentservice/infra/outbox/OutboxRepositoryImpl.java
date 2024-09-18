@@ -33,7 +33,7 @@ public class OutboxRepositoryImpl implements OutboxRepository {
 
     @Override
     public Optional<Outbox> saveOutbox(Outbox outbox) {
-        OutboxEntity outboxEntity = outboxJpaRepository.save(OutboxEntity.toEntity(outbox));
+        OutboxEntity outboxEntity = outboxJpaRepository.save(OutboxEntity.from(outbox));
         return Optional.of(outboxEntity.toDomain());
 
     }

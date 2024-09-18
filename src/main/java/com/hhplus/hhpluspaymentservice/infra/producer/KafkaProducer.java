@@ -18,11 +18,11 @@ public class KafkaProducer {
 
     @Transactional
     public void publish(String topic, String key, String payload) {
-        log.info("[KAFKA] :: PUBLISH :: sending  topic={}, key={}", topic, key);
+        log.info("[KAFKA] :: PUBLISH :: sending topic={}, key={}", topic, key);
 
-        CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(topic, key, payload);
+        CompletableFuture<SendResult<String, String>> sendMessage = kafkaTemplate.send(topic, key, payload);
 
-        future.whenComplete((result, ex) -> {
+        sendMessage.whenComplete((result, ex) -> {
             if (ex == null) {
                 log.info("Message [{}] sent successfully with offset [{}] to topic [{}]",
                         payload,

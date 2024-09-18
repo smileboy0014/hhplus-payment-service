@@ -32,7 +32,7 @@ public class Payment implements Serializable {
     private LocalDateTime createdAt;
 
     public enum PaymentStatus {
-
+        PENDING, // 결제 진행 중
         COMPLETE, // 결제 완료
         CANCEL, // 결제 취소 완료
         REFUND // 결제 환불 완료
@@ -45,6 +45,10 @@ public class Payment implements Serializable {
                     "이미 결제되었습니다.");
         }
         status = PaymentStatus.COMPLETE;
+    }
+
+    public void fail() {
+        status = PaymentStatus.CANCEL;
     }
 
     public void cancel() {

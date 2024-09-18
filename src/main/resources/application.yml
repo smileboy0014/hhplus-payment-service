@@ -36,7 +36,7 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
-      group-id: hhplus-01
+      group-id: hhplus-payment
 
 server:
   servlet:
@@ -52,6 +52,12 @@ logging:
 
 jwt:
   secret-key: hhplusConcertSecretKeyForAuthenticationJwtToken
+
+resilience4j.retry:
+  instances:
+    paymentEventPublisher:
+      maxAttempts: 3
+      waitDuration: 2s
 ---
 spring:
   config:
@@ -59,10 +65,10 @@ spring:
       on-profile: dev
   datasource:
     hikari:
-      jdbc-url: jdbc:mysql://localhost:53306/concert?useUnicode=yes&characterEncoding=UTF-8&rewriteBatchedStatements=true
+      jdbc-url: jdbc:mysql://database-hhplus.cxyqk8cmu4tk.us-east-1.rds.amazonaws.com/payment
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: root
-      password: 1234
+      password: hhplus123
   jpa:
     database: mysql
     hibernate:
@@ -72,6 +78,14 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
         default_batch_fetch_size: 500
+  data:
+    redis:
+      host: redis-cluster.1i6zcb.ng.0001.use1.cache.amazonaws.com
+      port: 6379
+  kafka:
+    bootstrap-servers: b-2.clusterhhplus.vt4p8v.c18.kafka.us-east-1.amazonaws.com:9092
+    consumer:
+      group-id: hhplus-payment
 
 logging:
   level:

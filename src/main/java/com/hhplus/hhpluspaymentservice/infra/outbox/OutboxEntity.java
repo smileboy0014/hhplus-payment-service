@@ -23,9 +23,6 @@ public class OutboxEntity extends BaseTimeEntity {
     private String messageId;
 
     @Enumerated(EnumType.STRING)
-    private Outbox.DomainType type;
-
-    @Enumerated(EnumType.STRING)
     private Outbox.EventStatus status;
 
     @Column(columnDefinition = "TEXT")
@@ -36,11 +33,10 @@ public class OutboxEntity extends BaseTimeEntity {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    public static OutboxEntity toEntity(Outbox outbox) {
+    public static OutboxEntity from(Outbox outbox) {
         return OutboxEntity.builder()
                 .outboxId(outbox.getOutboxId())
                 .messageId(outbox.getMessageId())
-                .type(outbox.getType())
                 .status(outbox.getStatus())
                 .payload(outbox.getPayload())
                 .retryCount(outbox.getRetryCount())
@@ -52,7 +48,6 @@ public class OutboxEntity extends BaseTimeEntity {
         return Outbox.builder()
                 .outboxId(outboxId)
                 .messageId(messageId)
-                .type(type)
                 .status(status)
                 .payload(payload)
                 .retryCount(retryCount)

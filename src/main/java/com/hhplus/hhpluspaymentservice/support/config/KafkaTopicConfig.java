@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static com.hhplus.hhpluspaymentservice.support.config.KafkaTopicConfig.KafkaConstants.*;
+
 @Configuration
 public class KafkaTopicConfig {
 
@@ -27,13 +29,16 @@ public class KafkaTopicConfig {
     @Bean
     public KafkaAdmin.NewTopics newTopics() {
         return new KafkaAdmin.NewTopics(
-                Stream.of(KafkaConstants.PAYMENT_TOPIC)
+                Stream.of(PAYMENT_TOPIC, CONCERT_TOPIC, USER_TOPIC, QUEUE_TOPIC)
                         .map(topic -> new NewTopic(topic, 3, (short) 1))
                         .toArray(NewTopic[]::new)
         );
     }
 
     public static class KafkaConstants {
-        public static final String PAYMENT_TOPIC = "payment-topic";
+        public static final String PAYMENT_TOPIC = "payment-events";
+        public static final String CONCERT_TOPIC = "concert-events";
+        public static final String USER_TOPIC = "user-events";
+        public static final String QUEUE_TOPIC = "queue-events";
     }
 }
