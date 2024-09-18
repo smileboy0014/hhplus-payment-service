@@ -58,6 +58,44 @@ resilience4j.retry:
     paymentEventPublisher:
       maxAttempts: 3
       waitDuration: 2s
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: container
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://host.docker.internal:23306/payment?useUnicode=yes&characterEncoding=UTF-8&rewriteBatchedStatements=true
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: 1234
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        default_batch_fetch_size: 500
+  data:
+    redis:
+      host: host.docker.internal
+      port: 26379
+  kafka:
+    bootstrap-servers: host.docker.internal:9093
+    consumer:
+      group-id: hhplus-payment
+
+logging:
+  level:
+    org:
+      web: debug
+      hibernate:
+        SQL: debug
+
 ---
 spring:
   config:
