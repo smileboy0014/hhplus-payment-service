@@ -121,7 +121,7 @@ spring:
       host: redis-cluster.1i6zcb.ng.0001.use1.cache.amazonaws.com
       port: 6379
   kafka:
-    bootstrap-servers: b-2.clusterhhplus.vt4p8v.c18.kafka.us-east-1.amazonaws.com:9092
+    bootstrap-servers: b-1.kafkacluster.ogsg7s.c18.kafka.us-east-1.amazonaws.com:9092
     consumer:
       group-id: hhplus-payment
 
