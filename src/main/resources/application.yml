@@ -16,7 +16,7 @@ spring:
     name: hhplus-payment-service
   datasource:
     hikari:
-      jdbc-url: jdbc:mysql://localhost:53306/concert?useUnicode=yes&characterEncoding=UTF-8&rewriteBatchedStatements=true
+      jdbc-url: jdbc:mysql://localhost:23306/payment?useUnicode=yes&characterEncoding=UTF-8&rewriteBatchedStatements=true
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: root
       password: 1234
@@ -32,16 +32,16 @@ spring:
   data:
     redis:
       host: localhost
-      port: 56379
+      port: 26379
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
-      group-id: hhplus-01
+      group-id: hhplus-payment
 
 server:
   servlet:
     context-path: /api
-  port: 8080
+  port: 8082
 
 logging:
   level:
@@ -52,14 +52,22 @@ logging:
 
 jwt:
   secret-key: hhplusConcertSecretKeyForAuthenticationJwtToken
+
+resilience4j.retry:
+  instances:
+    paymentEventPublisher:
+      maxAttempts: 3
+      waitDuration: 2s
+
 ---
+
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: container
   datasource:
     hikari:
-      jdbc-url: jdbc:mysql://localhost:53306/concert?useUnicode=yes&characterEncoding=UTF-8&rewriteBatchedStatements=true
+      jdbc-url: jdbc:mysql://host.docker.internal:23306/payment?useUnicode=yes&characterEncoding=UTF-8&rewriteBatchedStatements=true
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: root
       password: 1234
@@ -72,6 +80,50 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
         default_batch_fetch_size: 500
+  data:
+    redis:
+      host: host.docker.internal
+      port: 26379
+  kafka:
+    bootstrap-servers: host.docker.internal:9093
+    consumer:
+      group-id: hhplus-payment
+
+logging:
+  level:
+    org:
+      web: debug
+      hibernate:
+        SQL: debug
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://database-hhplus.cxyqk8cmu4tk.us-east-1.rds.amazonaws.com/payment
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: hhplus123
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        default_batch_fetch_size: 500
+  data:
+    redis:
+      host: redis-cluster.1i6zcb.ng.0001.use1.cache.amazonaws.com
+      port: 6379
+  kafka:
+    bootstrap-servers: b-1.kafkacluster.ogsg7s.c18.kafka.us-east-1.amazonaws.com:9092
+    consumer:
+      group-id: hhplus-payment
 
 logging:
   level:
